@@ -1,0 +1,37 @@
+# shared data
+$CPU = 1
+$MEMORY = 1024
+$MACHINE_NAME = "mamoussa"
+
+# The server machine data
+$SERVER_IP = 192.168.56.110
+$SERVER_HOST_NAME = "mamoussaS"
+
+# The worker machine data
+$SERVER_WORKER_IP = 192.168.56.111
+$SERVER_WORKER_HOST_NAME = "mamoussaSW"
+
+Vagrant.configure(2) do |config|
+	config.vm.box = "generic/ubuntu2204"
+	config.vm.provision "shell", inline: "echo 'vagrant up' "
+
+	# The server machine
+	config.vm.define $MACHINE_NAME do |server|
+		server.vm.hostname = $SERVER_HOST_NAME
+		server.vm.network "public_network", ip: $SERVER_IP
+		server.vm.provider "virtualbox" do |v|
+			v.memory = $MEMORY
+			v.cpus = $CPU
+		end
+	end
+	
+	# The server worker machine
+	config.vm.define $MACHINE_NAME do |agent|
+		agent.vm.hostname = $SERVER_WORKER_HOST_NAME
+		agent.vm.network "public_network", ip: $SERVER_WORKER_IP
+		agent.vm.provider "virtualbox" do |v|
+			v.memory = $MEMORY
+			v.cpus = $CPU
+		end
+	end
+end
