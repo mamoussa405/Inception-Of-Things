@@ -4,11 +4,11 @@ $MEMORY = 1024
 $MACHINE_NAME = "mamoussa"
 
 # The server machine data
-$SERVER_IP = 192.168.56.110
+$SERVER_IP = "192.168.56.110"
 $SERVER_HOST_NAME = "mamoussaS"
 
 # The worker machine data
-$SERVER_WORKER_IP = 192.168.56.111
+$SERVER_WORKER_IP = "192.168.56.111"
 $SERVER_WORKER_HOST_NAME = "mamoussaSW"
 
 Vagrant.configure(2) do |config|
