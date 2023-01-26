@@ -12,7 +12,7 @@ $SERVER_WORKER_IP = "192.168.56.111"
 $SERVER_WORKER_HOST_NAME = "mamoussaSW"
 
 Vagrant.configure(2) do |config|
-	config.vm.box = "generic/ubuntu2204"
+	config.vm.box = "ubuntu/trusty32"
 
 	# The server machine
 	config.vm.define $MACHINE_NAME do |server|
