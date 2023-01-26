@@ -13,7 +13,6 @@ $SERVER_WORKER_HOST_NAME = "mamoussaSW"
 
 Vagrant.configure(2) do |config|
 	config.vm.box = "generic/ubuntu2204"
-	config.vm.provision "shell", inline: "echo 'vagrant up' "
 
 	# The server machine
 	config.vm.define $MACHINE_NAME do |server|
@@ -26,12 +25,12 @@ Vagrant.configure(2) do |config|
 	end
 	
 	# The server worker machine
-	config.vm.define $MACHINE_NAME do |agent|
-		agent.vm.hostname = $SERVER_WORKER_HOST_NAME
-		agent.vm.network "public_network", ip: $SERVER_WORKER_IP
-		agent.vm.provider "virtualbox" do |v|
-			v.memory = $MEMORY
-			v.cpus = $CPU
-		end
-	end
+	# config.vm.define $MACHINE_NAME do |agent|
+	# 	agent.vm.hostname = $SERVER_WORKER_HOST_NAME
+	# 	agent.vm.network "public_network", ip: $SERVER_WORKER_IP
+	# 	agent.vm.provider "virtualbox" do |v|
+	# 		v.memory = $MEMORY
+	# 		v.cpus = $CPU
+	# 	end
+	# end
 end
