@@ -1,0 +1,25 @@
+CPU = 1
+MEMORY = 1024
+
+# The server machine data
+SERVER_IP = "192.168.56.110"
+SERVER_HOST_NAME = "mbaniS"
+SERVER_MACHINE_NAME = "mbaniS"
+
+Vagrant.configure("2") do |config|
+	config.vm.box = "hashicorp/bionic64"
+	
+	# The server machine
+	config.vm.define SERVER_MACHINE_NAME do |server|
+		server.vm.hostname = SERVER_HOST_NAME
+		server.vm.network "private_network", ip: SERVER_IP
+		server.vm.network "forwarded_port", guest: 6443, host: 6443
+		server.vm.network "forwarded_port", guest: 80, host: 80
+		server.vm.provider "virtualbox" do |v|
+			v.memory = MEMORY
+			v.cpus = CPU
+			v.name = SERVER_MACHINE_NAME
+		end
+		server.vm.provision "shell", path: "./scripts/k3s_server_config.sh", args: [SERVER_IP]
+	end
+end

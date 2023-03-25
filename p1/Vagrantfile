@@ -1,36 +1,42 @@
 # shared data
-$CPU = 1
-$MEMORY = 1024
-$MACHINE_NAME = "mamoussa"
+CPU = 1
+MEMORY = 1024
 
 # The server machine data
-$SERVER_IP = "192.168.56.110"
-$SERVER_HOST_NAME = "mamoussaS"
+SERVER_IP = "192.168.56.110"
+SERVER_HOST_NAME = "mamoussaS"
+SERVER_MACHINE_NAME = "mamoussaS"
 
 # The worker machine data
-$SERVER_WORKER_IP = "192.168.56.111"
-$SERVER_WORKER_HOST_NAME = "mamoussaSW"
+WORKER_IP = "192.168.56.111"
+WORKER_HOST_NAME = "mamoussaSW"
+WORKER_MACHINE_NAME = "mamoussaSW"
 
-Vagrant.configure(2) do |config|
-	config.vm.box = "ubuntu/trusty32"
-
+Vagrant.configure("2") do |config|
+	config.vm.box = "bento/ubuntu-22.04"
+	
 	# The server machine
-	config.vm.define $MACHINE_NAME do |server|
-		server.vm.hostname = $SERVER_HOST_NAME
-		server.vm.network "public_network", ip: $SERVER_IP
+	config.vm.define SERVER_MACHINE_NAME do |server|
+		server.vm.hostname = SERVER_HOST_NAME
+		server.vm.network "private_network", ip: SERVER_IP
+		server.vm.network "forwarded_port", guest: 6443, host: 6443
 		server.vm.provider "virtualbox" do |v|
-			v.memory = $MEMORY
-			v.cpus = $CPU
+			v.memory = MEMORY
+			v.cpus = CPU
+			v.name = SERVER_MACHINE_NAME
 		end
+		server.vm.provision "shell", path: "./scripts/k3s_server_config.sh", args: [SERVER_IP]
 	end
 	
-	# The server worker machine
-	# config.vm.define $MACHINE_NAME do |agent|
-	# 	agent.vm.hostname = $SERVER_WORKER_HOST_NAME
-	# 	agent.vm.network "public_network", ip: $SERVER_WORKER_IP
-	# 	agent.vm.provider "virtualbox" do |v|
-	# 		v.memory = $MEMORY
-	# 		v.cpus = $CPU
-	# 	end
-	# end
+	# The worker machine
+	config.vm.define WORKER_MACHINE_NAME do |agent|
+	 	agent.vm.hostname = WORKER_HOST_NAME
+	 	agent.vm.network "private_network", ip: WORKER_IP
+		agent.vm.provider "virtualbox" do |v|
+	 		v.memory = MEMORY
+	 		v.cpus = CPU
+			v.name = WORKER_MACHINE_NAME
+	 	end
+		agent.vm.provision "shell", path: "./scripts/k3s_agent_config.sh", args:[SERVER_IP]
+	end
 end
