@@ -49,4 +49,4 @@ This will create two namespaces:
 
 The application will be automatically deployed by Argo CD using the repository https://github.com/mamoussa405/iot-cd-test. The application has two different versions.
 
-You can change the version from the public Github repository https://github.com/mbani01/iot-cd-test and check that the application has been correctly updated.
+You can change the version from the public Github repository https://github.com/mamoussa405/iot-cd-test and check that the application has been correctly updated.
